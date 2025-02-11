@@ -14,10 +14,11 @@
 #   ACL_INCLUDE_DIRS   - include directories for ACL
 #   ACL_LIBRARIES      - link against this library to use ACL
 #
-# The module will also define two cache variables:
+# The module will also define three cache variables:
 #
-#   ACL_INCLUDE_DIR    - the ACL include directory
-#   ACL_LIBRARY        - the path to the ACL library
+#   ACL_INCLUDE_DIR         - the ACL include directory
+#   ACL_LIBRARY             - the path to the ACL library
+#   ACL_GRAPH_LIBRARY_FOUND - True if Arm Compute Graph library was found
 #
 
 # Use ACL_ROOT_DIR environment variable to find the library and headers
@@ -59,8 +60,15 @@ if(ACL_FOUND)
 
   list(APPEND ACL_INCLUDE_DIRS
     ${ACL_INCLUDE_DIR} ${ACL_EXTRA_INCLUDE_DIR})
-  list(APPEND ACL_LIBRARIES
-    ${ACL_LIBRARY} ${ACL_GRAPH_LIBRARY})
+
+  list(APPEND ACL_LIBRARIES ${ACL_LIBRARY})
+  
+  set(ACL_GRAPH_LIBRARY_FOUND FALSE)
+  if (ACL_GRAPH_LIBRARY)
+    set(ACL_GRAPH_LIBRARY_FOUND TRUE)
+    list(APPEND ACL_LIBRARIES ${ACL_GRAPH_LIBRARY})
+  endif()
+  set(ACL_GRAPH_LIBRARY_FOUND ${ACL_GRAPH_LIBRARY_FOUND} CACHE BOOL "Found 'arm_compute_graph' library?")
 endif()
 
 
